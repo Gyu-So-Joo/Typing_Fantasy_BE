@@ -13,6 +13,7 @@ public class UserVO {
     private String name;
     private String password;
     private String monsterIds;
+    private String selectedLang;
     private Map<String, Integer> recordTotalErrors;
     private Long totalScore;
     private BigDecimal recordAccuracyAvg;
