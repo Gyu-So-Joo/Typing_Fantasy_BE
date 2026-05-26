@@ -5,11 +5,13 @@ import com.GyuSoJoo.TypingFantasy.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("api/user")
+@CrossOrigin(origins="*")
 public class UserController {
     @Autowired
     private UserService userService;
