@@ -12,7 +12,18 @@ public class MonsterService {
     @Autowired
     MonsterMapper monsterMapper;
 
+    // 몬스터 전체 조회
     public List<MonsterVO> getAllMonsters() {
         return monsterMapper.findAll();
+    }
+
+    // 몬스터 조회
+    public MonsterVO getMonster(long id) {
+        return monsterMapper.findById(id);
+    }
+
+    // 몬스터 추가
+    public boolean addMonster(MonsterVO monster) {
+        return monsterMapper.insert(monster) > 0;
     }
 }
