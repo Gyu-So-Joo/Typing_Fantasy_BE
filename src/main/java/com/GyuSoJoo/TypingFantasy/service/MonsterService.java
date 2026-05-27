@@ -26,4 +26,8 @@ public class MonsterService {
     public boolean addMonster(MonsterVO monster) {
         return monsterMapper.insert(monster) > 0;
     }
+
+    public boolean deleteMonster(long id) {
+        return monsterMapper.deleteById(id) > 0;
+    }
 }

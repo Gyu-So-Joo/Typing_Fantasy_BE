@@ -68,4 +68,20 @@ public class MonsterController {
         }
         return ResponseObj.of(HttpStatus.CREATED.value(), "몬스터 데이터 추가 성공", monsterService.getMonster(monster.getId()));
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "몬스터 데이터 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "몬스터 데이터 삭제 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "204", description = "몬스터 데이터 삭제 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<Void> deleteMonster(@PathVariable("id") long id) {
+        boolean isSuccess = monsterService.deleteMonster(id);
+
+        if (!isSuccess) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "몬스터 데이터 삭제 실패");
+        }
+        return ResponseObj.of(HttpStatus.NO_CONTENT.value(), "몬스터 데이터 삭제 성공");
+    }
 }
