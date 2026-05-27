@@ -1,10 +1,7 @@
 package com.GyuSoJoo.TypingFantasy.mapper;
 
 import com.GyuSoJoo.TypingFantasy.vo.MonsterVO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -14,12 +11,18 @@ public interface MonsterMapper {
     @Select("SELECT * FROM monster")
     List<MonsterVO> findAll();
 
-    // 몬스터 조회
+    // 몬스터 조회 id
     @Select("SELECT * FROM monster WHERE id = #{id}")
     MonsterVO findById(long id);
 
+
+    // 몬스터 조회 name
+    @Select("SELECT * FROM monster WHERE name = #{name}")
+    MonsterVO findByName(String name);
+
     // 몬스터 추가
-    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code) VALUES(#{name},#{level},#{detail},#{js_code},#{java_code})")
+    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code) VALUES(#{name},#{level},#{detail},#{jsCode},#{javaCode})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(MonsterVO monster);
 
     // 몬스터 삭제

@@ -39,7 +39,7 @@ public class MonsterController {
             @ApiResponse(responseCode = "200", description = "몬스터 데이터 로드 성공", content = @Content(mediaType = "application/json"))
     })
     public ResponseObj<MonsterVO> getMonster(@PathVariable("id") long id) {
-        MonsterVO monster = monsterService.getMonster(id);
+        MonsterVO monster = monsterService.getMonsterById(id);
         if (monster == null) {
             return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "몬스터 데이터 로드 실패");
         }
@@ -50,10 +50,16 @@ public class MonsterController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "몬스터 데이터 추가")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "409", description = "이미 존재하는 몬스터 데이터", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "잘못된 요청", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "201", description = "몬스터 데이터 추가 성공", content = @Content(mediaType = "application/json"))
     })
     public ResponseObj<MonsterVO> addMonster(@RequestBody MonsterDTO.AddMonsterRequest request) {
+        MonsterVO existing = monsterService.getMonsterByName(request.name());
+        if (existing != null) {
+            return ResponseObj.of(HttpStatus.CONFLICT.value(), "이미 존재하는 몬스터 데이터입니다.", existing);
+        }
+
         MonsterVO monster = new MonsterVO();
         monster.setName(request.name());
         monster.setLevel(request.level());
@@ -66,7 +72,7 @@ public class MonsterController {
         if (!is_success) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
-        return ResponseObj.of(HttpStatus.CREATED.value(), "몬스터 데이터 추가 성공", monsterService.getMonster(monster.getId()));
+        return ResponseObj.of(HttpStatus.CREATED.value(), "몬스터 데이터 추가 성공", monsterService.getMonsterByName(monster.getName()));
     }
 
     @DeleteMapping("/{id}")

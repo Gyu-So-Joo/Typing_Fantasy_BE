@@ -18,8 +18,12 @@ public class MonsterService {
     }
 
     // 몬스터 조회
-    public MonsterVO getMonster(long id) {
+    public MonsterVO getMonsterById(long id) {
         return monsterMapper.findById(id);
+    }
+
+    public MonsterVO getMonsterByName(String Name) {
+        return monsterMapper.findByName(Name);
     }
 
     // 몬스터 추가
