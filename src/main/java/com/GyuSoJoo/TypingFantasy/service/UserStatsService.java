@@ -11,7 +11,7 @@ public class UserStatsService {
     private UserMapper userMapper;
 
     // 회원 통계
-    public UserVO userStats(String name) {
+    public UserVO getUserStats(String name) {
         return userMapper.findByName(name);
     }
 }

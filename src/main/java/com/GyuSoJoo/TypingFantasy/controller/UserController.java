@@ -3,6 +3,7 @@ package com.GyuSoJoo.TypingFantasy.controller;
 import com.GyuSoJoo.TypingFantasy.dto.ResponseObj;
 import com.GyuSoJoo.TypingFantasy.dto.UserDTO;
 import com.GyuSoJoo.TypingFantasy.service.UserService;
+import com.GyuSoJoo.TypingFantasy.service.UserStatsService;
 import com.GyuSoJoo.TypingFantasy.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("api/user")
 @CrossOrigin(origins="*")
@@ -23,6 +22,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserStatsService userStatsService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,5 +62,28 @@ public class UserController {
 
         UserDTO.LoginResponse response = new UserDTO.LoginResponse(user.getId(), user.getName(), user.getMonsterIds(), user.getSelectedLang());
         return ResponseObj.of(HttpStatus.OK.value(), "로그인 성공", response);
+    }
+
+    @GetMapping("/stats/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 통계 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "조회 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<UserDTO.StatsResponse> getUserStats(@PathVariable("name") String name) {
+        UserVO user = userStatsService.getUserStats(name);
+
+        if (user == null) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "유저 통계 조회 실패");
+        }
+
+        UserDTO.StatsResponse response = new UserDTO.StatsResponse(
+                user.getRecordTotalErrors(),
+                user.getTotalScore(),
+                user.getRecordAccuracyAvg(),
+                user.getRecordCpmAvg()
+        );
+        return ResponseObj.of(HttpStatus.OK.value(), "유저 통계 조회 성공", response);
     }
 }
