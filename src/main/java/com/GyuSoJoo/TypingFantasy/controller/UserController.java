@@ -2,6 +2,7 @@ package com.GyuSoJoo.TypingFantasy.controller;
 
 import com.GyuSoJoo.TypingFantasy.dto.ResponseObj;
 import com.GyuSoJoo.TypingFantasy.dto.UserDTO;
+import com.GyuSoJoo.TypingFantasy.service.UserRankingService;
 import com.GyuSoJoo.TypingFantasy.service.UserService;
 import com.GyuSoJoo.TypingFantasy.service.UserStatsService;
 import com.GyuSoJoo.TypingFantasy.vo.UserVO;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/user")
 @CrossOrigin(origins="*")
@@ -25,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserStatsService userStatsService;
+
+    @Autowired
+    private UserRankingService userRankingService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -85,5 +91,13 @@ public class UserController {
                 user.getRecordCpmAvg()
         );
         return ResponseObj.of(HttpStatus.OK.value(), "유저 통계 조회 성공", response);
+    }
+
+    @GetMapping("/rank/list")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 랭킹 조회")
+    @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json"))
+    public ResponseObj<List<UserDTO.RankingsResponse>> getUserRankingList() {
+        return ResponseObj.of(HttpStatus.OK.value(), "유저 랭킹 조회 성공", userRankingService.getUserRankingList());
     }
 }
