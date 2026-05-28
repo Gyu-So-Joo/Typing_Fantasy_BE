@@ -91,9 +91,9 @@ public class MonsterController {
         monster.setSilhouetteImg(request.getSilhouetteImg() == null ? "" : fileService.uploadImage(request.getSilhouetteImg()));
         monster.setNormalImg(request.getNormalImg() == null ? "" : fileService.uploadImage(request.getNormalImg()));
 
-        boolean is_success = monsterService.addMonster(monster);
+        boolean isSuccess = monsterService.addMonster(monster);
 
-        if (!is_success) {
+        if (!isSuccess) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
         return ResponseObj.of(HttpStatus.CREATED.value(), "몬스터 데이터 추가 성공", monsterService.getMonsterByName(monster.getName()));
@@ -114,4 +114,41 @@ public class MonsterController {
         }
         return ResponseObj.of(HttpStatus.OK.value(), "몬스터 데이터 삭제 성공");
     }
+
+    @PutMapping(consumes = {"multipart/form-data"})
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "몬스터 데이터 수정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 몬스터 데이터", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "몬스터 데이터 수정 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<MonsterVO> updateMonster(@ModelAttribute MonsterDTO.UpdateMonsterRequest request) throws IOException {
+        MonsterVO existing = monsterService.getMonsterById(request.getId());
+        if (existing == null) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "존재하지 않는 몬스터 데이터입니다.");
+        }
+
+        MonsterVO monster = new MonsterVO();
+        monster.setId(request.getId());
+        monster.setName(request.getName());
+        monster.setLevel(request.getLevel());
+        monster.setDetail(request.getDetail());
+        monster.setJsCode(request.getJsCode());
+        monster.setJavaCode(request.getJavaCode());
+
+        monster.setSilhouetteImg(request.getSilhouetteImg() == null ?
+                existing.getSilhouetteImg() : fileService.uploadImage(request.getSilhouetteImg()));
+        monster.setNormalImg(request.getNormalImg() == null ?
+                existing.getNormalImg() : fileService.uploadImage(request.getNormalImg()));
+
+        boolean isSuccess = monsterService.UpdateMonster(monster);
+
+        if (!isSuccess) {
+            return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+        }
+
+        return ResponseObj.of(HttpStatus.OK.value(), "몬스터 데이터 수정 완료", monster);
+    }
+
 }

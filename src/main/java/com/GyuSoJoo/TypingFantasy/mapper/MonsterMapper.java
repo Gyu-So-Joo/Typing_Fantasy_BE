@@ -30,4 +30,9 @@ public interface MonsterMapper {
     @Delete("DELETE FROM monster WHERE id = #{id}")
     int deleteById(long id);
 
+    // 몬스터 업데이트
+    @Update("UPDATE monster SET " +
+            "name = #{name}, level = #{level}, detail = #{detail}, js_code = #{jsCode}, java_code = #{javaCode}, " +
+            "silhouette_img = #{silhouetteImg}, normal_img = #{normalImg} WHERE id = #{id}")
+    int updateMonster(MonsterVO monster);
 }

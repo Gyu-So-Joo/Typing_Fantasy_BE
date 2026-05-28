@@ -31,7 +31,13 @@ public class MonsterService {
         return monsterMapper.insert(monster) > 0;
     }
 
+    // 몬스터 삭제
     public boolean deleteMonster(long id) {
         return monsterMapper.deleteById(id) > 0;
+    }
+
+    // 몬스터 업데이트
+    public boolean UpdateMonster(MonsterVO monster) {
+        return monsterMapper.updateMonster(monster) > 0;
     }
 }
