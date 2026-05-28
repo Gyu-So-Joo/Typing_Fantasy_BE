@@ -54,6 +54,3 @@ application.properties
 # OS 관련 파일
 .DS_Store
 Thumbs.db
-
-# 이미지 파일
-/src/main/resources/images/

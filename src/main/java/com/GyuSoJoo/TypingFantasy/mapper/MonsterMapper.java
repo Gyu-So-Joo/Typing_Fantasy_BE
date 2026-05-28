@@ -21,7 +21,8 @@ public interface MonsterMapper {
     MonsterVO findByName(String name);
 
     // 몬스터 추가
-    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code) VALUES(#{name},#{level},#{detail},#{jsCode},#{javaCode})")
+    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code, silhouette_img, normal_img)" +
+            "VALUES(#{name}, #{level}, #{detail}, #{jsCode}, #{javaCode}, #{silhouetteImg}, #{normalImg})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(MonsterVO monster);
 

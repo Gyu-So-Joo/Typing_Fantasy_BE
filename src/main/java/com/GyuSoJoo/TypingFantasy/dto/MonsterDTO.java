@@ -1,7 +1,17 @@
 package com.GyuSoJoo.TypingFantasy.dto;
 
-public class MonsterDTO {
-    private MonsterDTO() {}
+import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
-    public record AddMonsterRequest(String name, int level, String detail, String jsCode, String javaCode) {}
+public class MonsterDTO {
+    @Data
+    public static class AddMonsterRequest {
+        private String name;
+        private int level;
+        private String detail;
+        private String jsCode;
+        private String javaCode;
+        private MultipartFile silhouetteImg;
+        private MultipartFile normalImg;
+    }
 }
