@@ -14,7 +14,8 @@ public interface UserMapper {
     int insert(UserVO user);
 
     // 아이디(name)으로 유저 조회
-    // 회원가입 시, 있으면 중복
+    // 1. 회원가입 시, 중복 확인
+    // 2. 회원 통계
     @Select("SELECT * FROM user WHERE name = #{name}")
     UserVO findByName(String name);
 
