@@ -11,4 +11,6 @@ public class UserDTO {
     public record LoginResponse(Long id, String name, String monsterIds, String selectedLang) {}
 
     public record StatsResponse(String recordTotalErrors, Long totalScore, BigDecimal recordAccuracyAvg, int recordCpmAvg) {}
+
+    public record RankingsResponse(String name, Long totalScore) {}
 }
