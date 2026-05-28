@@ -27,6 +27,6 @@ public interface UserMapper {
     UserVO findUser(String name, String password);
 
     // 유저 랭킹 조회
-    @Select("SELECT name, total_score FROM user ORDER BY total_score DESC")
+    @Select("SELECT name, total_score FROM user WHERE total_score > 0 ORDER BY total_score DESC, name ASC")
     List<UserDTO.RankingsResponse> findRanking();
 }
