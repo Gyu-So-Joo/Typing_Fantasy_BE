@@ -2,10 +2,7 @@ package com.GyuSoJoo.TypingFantasy.mapper;
 
 import com.GyuSoJoo.TypingFantasy.dto.UserDTO;
 import com.GyuSoJoo.TypingFantasy.vo.UserVO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -29,4 +26,8 @@ public interface UserMapper {
     // 유저 랭킹 조회
     @Select("SELECT name, total_score FROM user WHERE total_score > 0 ORDER BY total_score DESC, name ASC")
     List<UserDTO.RankingsResponse> findRanking();
+
+    // 유저 언어 변경
+    @Update("UPDATE user SET selected_lang = #{selectedLang} WHERE id = #{id}")
+    int setSelectedLang(@Param("id") long id, @Param("selectedLang") String selectedLang);
 }

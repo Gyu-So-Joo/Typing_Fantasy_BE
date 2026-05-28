@@ -27,4 +27,9 @@ public class UserService {
         }
         return null;
     }
+
+    // 선택된 언어 변경
+    public boolean setSelectedLang(long id, String selectedLang) {
+        return userMapper.setSelectedLang(id, selectedLang) > 0;
+    }
 }

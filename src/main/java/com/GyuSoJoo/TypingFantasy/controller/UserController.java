@@ -100,4 +100,21 @@ public class UserController {
     public ResponseObj<List<UserDTO.RankingsResponse>> getUserRankingList() {
         return ResponseObj.of(HttpStatus.OK.value(), "유저 랭킹 조회 성공", userRankingService.getUserRankingList());
     }
+
+    @PatchMapping("/{id}/lang/{selectedLang}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 언어 변경")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "변경 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "변경 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<Void> setSelectedLang(@PathVariable("id") long id, @RequestBody UserDTO.LangRequest request) {
+        boolean isSuccess = userService.setSelectedLang(id, request.selectedLang());
+
+        if (!isSuccess) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "유저 언어 변경 실패");
+        }
+        return ResponseObj.of(HttpStatus.OK.value(), "유저 언어 변경 성공");
+    }
+
 }

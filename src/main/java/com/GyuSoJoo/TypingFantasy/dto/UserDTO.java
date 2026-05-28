@@ -13,4 +13,6 @@ public class UserDTO {
     public record StatsResponse(String recordTotalErrors, Long totalScore, BigDecimal recordAccuracyAvg, int recordCpmAvg) {}
 
     public record RankingsResponse(String name, Long totalScore) {}
+
+    public record LangRequest(String selectedLang) {}
 }
