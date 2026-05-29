@@ -67,7 +67,7 @@ public class UserController {
             return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "로그인 실패");
         }
 
-        UserDTO.LoginResponse response = new UserDTO.LoginResponse(user.getId(), user.getName(), user.getMonsterIds(), user.getSelectedLang());
+        UserDTO.LoginResponse response = new UserDTO.LoginResponse(user.getId(), user.getName(), user.getSelectedLang());
         return ResponseObj.of(HttpStatus.OK.value(), "로그인 성공", response);
     }
 
