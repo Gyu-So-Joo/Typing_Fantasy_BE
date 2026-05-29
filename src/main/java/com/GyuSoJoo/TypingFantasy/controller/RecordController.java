@@ -3,6 +3,7 @@ package com.GyuSoJoo.TypingFantasy.controller;
 import com.GyuSoJoo.TypingFantasy.dto.RecordDTO;
 import com.GyuSoJoo.TypingFantasy.dto.ResponseObj;
 import com.GyuSoJoo.TypingFantasy.service.RecordService;
+import com.GyuSoJoo.TypingFantasy.service.UserService;
 import com.GyuSoJoo.TypingFantasy.vo.RecordVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class RecordController {
     @Autowired
     RecordService recordService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,11 +45,18 @@ public class RecordController {
         record.setIndentationError(request.indentationError());
         record.setNormalTextError(request.normalTextError());
 
-        boolean isSuccess = recordService.addRecord(record);
+        boolean isSuccess1 = recordService.addRecord(record);
 
-        if (!isSuccess) {
+        if (!isSuccess1) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
+
+        boolean isSuccess2 = userService.setSelectedLang(record.getUserId(), request.selectedLang());
+
+        if (!isSuccess2) {
+            return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+        }
+
         return ResponseObj.of(HttpStatus.CREATED.value(), "레코드 데이터 추가 성공");
     }
 }
