@@ -4,6 +4,9 @@ import com.GyuSoJoo.TypingFantasy.vo.RecordVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface RecordMapper {
@@ -16,6 +19,10 @@ public interface RecordMapper {
     int insert(RecordVO record);
 
     // 레코드 조회 (전체)
+    @Select("SELECT * FROM record")
+    List<RecordVO> findALL();
 
     // 레코드 조회 (단일)
+    @Select("SELECT * FROM record WHERE user_id = #{id}")
+    List<RecordVO> findByUserId(long id);
 }

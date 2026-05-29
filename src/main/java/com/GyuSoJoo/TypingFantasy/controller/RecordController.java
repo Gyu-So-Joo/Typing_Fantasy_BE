@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/record")
 @CrossOrigin(origins = "*")
@@ -58,5 +60,29 @@ public class RecordController {
         }
 
         return ResponseObj.of(HttpStatus.CREATED.value(), "레코드 데이터 추가 성공");
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "레코드 데이터 조회 (전체)")
+    @ApiResponse(responseCode = "200", description = "레코드 데이터 조회 성공 (전체)", content = @Content(mediaType = "application/json"))
+    public ResponseObj<List<RecordVO>> getAllRecords() {
+        return ResponseObj.of(HttpStatus.OK.value(), "모든 레코드 데이터 조회 성공", recordService.getAllRecords());
+    }
+
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "레코드 데이터 조회 (단일)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "레코드 데이터 조회 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "레코드 데이터 조회 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<List<RecordVO>> getRecordsByUserId(@PathVariable("userId") long id) {
+        List<RecordVO> records = recordService.getRecordsByUserId(id);
+
+        if (records.isEmpty()) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "레코드 데이터 조회 실패");
+        }
+        return ResponseObj.of(HttpStatus.OK.value(), "레코드 데이터 조회 성공", records);
     }
 }
