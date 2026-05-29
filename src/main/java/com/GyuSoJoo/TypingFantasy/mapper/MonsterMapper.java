@@ -36,4 +36,8 @@ public interface MonsterMapper {
             "js_code = #{jsCode}, java_code = #{javaCode}, normal_img = #{normalImg} " +
             "WHERE id = #{id}")
     int updateMonster(MonsterVO monster);
+
+    // 몬스터 조회 by level
+    @Select("SELECT * FROM monster WHERE level = #{level}")
+    List<MonsterVO> findByLevel(int level);
 }

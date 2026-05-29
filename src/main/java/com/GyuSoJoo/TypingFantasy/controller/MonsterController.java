@@ -4,6 +4,7 @@ import com.GyuSoJoo.TypingFantasy.dto.MonsterDTO;
 import com.GyuSoJoo.TypingFantasy.dto.ResponseObj;
 import com.GyuSoJoo.TypingFantasy.service.FileService;
 import com.GyuSoJoo.TypingFantasy.service.MonsterService;
+import com.GyuSoJoo.TypingFantasy.service.UserService;
 import com.GyuSoJoo.TypingFantasy.vo.MonsterVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,6 +30,9 @@ public class MonsterController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
@@ -148,4 +152,33 @@ public class MonsterController {
         return ResponseObj.of(HttpStatus.OK.value(), "몬스터 데이터 수정 완료", monster);
     }
 
+    @GetMapping("/random")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "랜덤 몬스터 데이터 로드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "몬스터 데이터 로드 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "몬스터 데이터 로드 성공", content = @Content(mediaType = "application/json"))
+    })
+    public ResponseObj<MonsterVO> getMonsterByLevelAndUserId(@RequestParam("userId") Long userId, @RequestParam("level") int level) {
+        // 입력받은 level의 몬스터들 조회
+        List<MonsterVO> monsters = monsterService.getMonstersByLevel(level);
+        if (monsters.isEmpty()) {
+            return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "몬스터 데이터 로드 실패");
+        }
+
+        // 유저가 가지고 있는 monsterIds를 JSON -> List로 조회
+        List<Integer> monsterIdList = userService.findMonsterIdsById(userId);
+
+        // monsterIds의 값과 monsterId를 비교해서 다른 것만 List로 필터링
+        List<MonsterVO> filteredMonsters = monsters.stream()
+                .filter(monster -> !monsterIdList.contains(monster.getId().intValue()))
+                .toList();
+
+        // 필터링한 List가 비어있으면, monsters 사용 (몬스터를 모두 가진 경우, 전체에서 선택)
+        List<MonsterVO> targetList = filteredMonsters.isEmpty() ? monsters : filteredMonsters;
+
+        // 랜덤 선택한 monster 리턴
+        int selectedNum = (int) (Math.random() * targetList.size());
+        return ResponseObj.of(HttpStatus.OK.value(), "몬스터 데이터 로드 완료", targetList.get(selectedNum));
+    }
 }

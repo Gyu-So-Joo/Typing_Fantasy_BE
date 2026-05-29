@@ -30,4 +30,8 @@ public interface UserMapper {
     // 유저 언어 변경
     @Update("UPDATE user SET selected_lang = #{selectedLang} WHERE id = #{id}")
     int setSelectedLang(@Param("id") long id, @Param("selectedLang") String selectedLang);
+
+    // 유저 monsterIds 조회
+    @Select("SELECT monster_ids FROM user WHERE id = ${id}")
+    String findUserMonsterIds(long id);
 }

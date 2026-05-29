@@ -26,6 +26,10 @@ public class MonsterService {
         return monsterMapper.findByName(Name);
     }
 
+    public List<MonsterVO> getMonstersByLevel(int level) {
+        return monsterMapper.findByLevel(level);
+    }
+
     // 몬스터 추가
     public boolean addMonster(MonsterVO monster) {
         return monsterMapper.insert(monster) > 0;
