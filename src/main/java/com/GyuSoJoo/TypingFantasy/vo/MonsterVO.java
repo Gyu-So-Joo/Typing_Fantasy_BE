@@ -12,7 +12,6 @@ public class MonsterVO {
     private String detail;
     private String jsCode;
     private String javaCode;
-    private String silhouetteImg;
     private String normalImg;
     private String createdAt;
 }

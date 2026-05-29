@@ -88,7 +88,6 @@ public class MonsterController {
         monster.setJsCode(request.getJsCode());
         monster.setJavaCode(request.getJavaCode());
 
-        monster.setSilhouetteImg(request.getSilhouetteImg() == null ? "" : fileService.uploadImage(request.getSilhouetteImg()));
         monster.setNormalImg(request.getNormalImg() == null ? "" : fileService.uploadImage(request.getNormalImg()));
 
         boolean isSuccess = monsterService.addMonster(monster);
@@ -137,8 +136,6 @@ public class MonsterController {
         monster.setJsCode(request.getJsCode());
         monster.setJavaCode(request.getJavaCode());
 
-        monster.setSilhouetteImg(request.getSilhouetteImg() == null ?
-                existing.getSilhouetteImg() : fileService.uploadImage(request.getSilhouetteImg()));
         monster.setNormalImg(request.getNormalImg() == null ?
                 existing.getNormalImg() : fileService.uploadImage(request.getNormalImg()));
 

@@ -19,5 +19,6 @@ public class RecordVO {
     private int caseMismatchError;
     private int indentationError;
     private int normalTextError;
+    private int score;
     private String createdAt;
 }

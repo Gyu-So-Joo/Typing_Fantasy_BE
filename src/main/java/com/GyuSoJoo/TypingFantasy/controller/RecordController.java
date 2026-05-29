@@ -46,6 +46,7 @@ public class RecordController {
         record.setCaseMismatchError(request.caseMismatchError());
         record.setIndentationError(request.indentationError());
         record.setNormalTextError(request.normalTextError());
+        record.setScore(record.getScore());
 
         boolean isSuccess1 = recordService.addRecord(record);
 

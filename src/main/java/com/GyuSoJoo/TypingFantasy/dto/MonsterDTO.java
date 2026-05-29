@@ -11,7 +11,6 @@ public class MonsterDTO {
         private String detail;
         private String jsCode;
         private String javaCode;
-        private MultipartFile silhouetteImg;
         private MultipartFile normalImg;
     }
 
@@ -23,7 +22,6 @@ public class MonsterDTO {
         private String detail;
         private String jsCode;
         private String javaCode;
-        private MultipartFile silhouetteImg;
         private MultipartFile normalImg;
     }
 }

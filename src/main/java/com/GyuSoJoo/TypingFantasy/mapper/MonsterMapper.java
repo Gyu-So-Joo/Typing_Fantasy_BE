@@ -21,8 +21,8 @@ public interface MonsterMapper {
     MonsterVO findByName(String name);
 
     // 몬스터 추가
-    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code, silhouette_img, normal_img)" +
-            "VALUES(#{name}, #{level}, #{detail}, #{jsCode}, #{javaCode}, #{silhouetteImg}, #{normalImg})")
+    @Insert("INSERT INTO monster(name, level, detail, js_code, java_code, normal_img) " +
+            "VALUES(#{name}, #{level}, #{detail}, #{jsCode}, #{javaCode}, #{normalImg})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(MonsterVO monster);
 
@@ -32,7 +32,8 @@ public interface MonsterMapper {
 
     // 몬스터 업데이트
     @Update("UPDATE monster SET " +
-            "name = #{name}, level = #{level}, detail = #{detail}, js_code = #{jsCode}, java_code = #{javaCode}, " +
-            "silhouette_img = #{silhouetteImg}, normal_img = #{normalImg} WHERE id = #{id}")
+            "name = #{name}, level = #{level}, detail = #{detail}, " +
+            "js_code = #{jsCode}, java_code = #{javaCode}, normal_img = #{normalImg} " +
+            "WHERE id = #{id}")
     int updateMonster(MonsterVO monster);
 }
