@@ -8,6 +8,7 @@ public class RecordDTO {
     public record InsertRequest(
             long userId,
             String userName,
+            long monsterId,
             String selectedLang,
             int timer,
             BigDecimal accuracy,

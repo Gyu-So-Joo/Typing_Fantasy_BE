@@ -11,9 +11,9 @@ import java.util.List;
 @Mapper
 public interface RecordMapper {
     // 레코드 추가 (게임 종료)
-    @Insert("INSERT INTO record(user_id, user_name, selected_lang, timer, accuracy, cpm, " +
+    @Insert("INSERT INTO record(user_id, user_name, monster_id, selected_lang, timer, accuracy, cpm, " +
             "special_char_error, case_mismatch_error, indentation_error, normal_text_error, score) " +
-            "VALUES(#{userId}, #{userName}, #{selectedLang}, #{timer}, #{accuracy}, #{cpm}, " +
+            "VALUES(#{userId}, #{userName}, #{monsterId}, #{selectedLang}, #{timer}, #{accuracy}, #{cpm}, " +
             "#{specialCharError}, #{caseMismatchError}, #{indentationError}, #{normalTextError}, #{score})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(RecordVO record);

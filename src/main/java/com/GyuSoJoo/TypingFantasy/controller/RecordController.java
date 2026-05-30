@@ -38,6 +38,7 @@ public class RecordController {
         RecordVO record = new RecordVO();
         record.setUserId(request.userId());
         record.setUserName(request.userName());
+        record.setMonsterId(request.monsterId());
         record.setSelectedLang(request.selectedLang());
         record.setTimer(request.timer());
         record.setAccuracy(request.accuracy());
