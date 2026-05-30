@@ -11,6 +11,7 @@ public class RecordVO {
     private long id;
     private long userId;
     private String userName;
+    private long monsterId;
     private String selectedLang;
     private int timer;
     private BigDecimal accuracy;
