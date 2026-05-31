@@ -14,5 +14,5 @@ public class UserDTO {
 
     public record RankingsResponse(String name, Long totalScore) {}
 
-    public record LangRequest(String selectedLang) {}
+    public record LangRequest(Long id, String selectedLang) {}
 }
