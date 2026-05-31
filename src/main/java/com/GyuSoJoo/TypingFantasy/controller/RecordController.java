@@ -49,16 +49,28 @@ public class RecordController {
         record.setNormalTextError(request.normalTextError());
         record.setScore(record.getScore());
 
-        boolean isSuccess1 = recordService.addRecord(record);
+        boolean isSuccess1 = userService.setSelectedLang(record.getUserId(), request.selectedLang());
 
         if (!isSuccess1) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
 
-        boolean isSuccess2 = userService.setSelectedLang(record.getUserId(), request.selectedLang());
+        boolean isSuccess2 = recordService.addRecord(record);
 
         if (!isSuccess2) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+        }
+
+        List<Integer> monsterIds = userService.findMonsterIdsById(record.getUserId());
+
+        if (!monsterIds.contains((int) record.getMonsterId())) {
+            monsterIds.add((int) record.getMonsterId());
+
+            boolean isSuccess3 = userService.setUserMonsterIds(record.getUserId(), monsterIds);
+
+            if (!isSuccess3) {
+                return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+            }
         }
 
         return ResponseObj.of(HttpStatus.CREATED.value(), "레코드 데이터 추가 성공");

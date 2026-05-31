@@ -34,4 +34,8 @@ public interface UserMapper {
     // 유저 monsterIds 조회
     @Select("SELECT monster_ids FROM user WHERE id = ${id}")
     String findUserMonsterIds(long id);
+
+    // 유저 monsterIds 변경
+    @Update("UPDATE user SET monster_ids = #{monsterIds} WHERE id = #{id}")
+    int setUserMonsterIds(@Param("id") long id, @Param("monsterIds") String monsterIds);
 }

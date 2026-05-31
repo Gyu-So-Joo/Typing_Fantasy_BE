@@ -39,8 +39,14 @@ public class UserService {
         return userMapper.setSelectedLang(id, selectedLang) > 0;
     }
 
-    // 몬스터 id 목록 조회
+    // MonsterIds 조회
     public List<Integer> findMonsterIdsById(long id) {
         return objectMapper.readValue(userMapper.findUserMonsterIds(id), new TypeReference<List<Integer>>() {});
+    }
+
+    // MonsterIds 변경
+    public boolean setUserMonsterIds(long id, List<Integer> MonsterIds) {
+        String userMonsterIds = objectMapper.writeValueAsString(MonsterIds);
+        return userMapper.setUserMonsterIds(id, userMonsterIds) > 0;
     }
 }
