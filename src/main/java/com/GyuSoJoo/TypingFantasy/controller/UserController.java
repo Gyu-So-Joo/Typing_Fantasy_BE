@@ -141,4 +141,12 @@ public class UserController {
         }
         return ResponseObj.of(HttpStatus.OK.value(), "유저 언어 변경 성공");
     }
+
+    @GetMapping("/{id}/monster-ids")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "유저 몬스터 아이디 조회")
+    @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json"))
+    public ResponseObj<List<Integer>> getMonsterIds(@PathVariable("id") long id) {
+        return ResponseObj.of(HttpStatus.OK.value(), "유저 몬스터 아이디 조회 성공", userService.findMonsterIdsById(id));
+    }
 }
