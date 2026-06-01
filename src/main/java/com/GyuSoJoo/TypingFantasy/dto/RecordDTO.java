@@ -15,7 +15,6 @@ public class RecordDTO {
             int cpm,
             int specialCharError,
             int caseMismatchError,
-            int indentationError,
             int normalTextError,
             int score
     ) {}
