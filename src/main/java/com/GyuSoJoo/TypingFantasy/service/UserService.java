@@ -56,7 +56,7 @@ public class UserService {
     }
 
     // totalScore 변경
-    public boolean setTotalScore(long id, long total_score) {
-        return userMapper.setTotalScore(id, total_score) > 0;
+    public boolean setTotalScore(long id, long totalScore) {
+        return userMapper.setTotalScore(id, totalScore) > 0;
     }
 }
