@@ -1,10 +1,12 @@
 package com.GyuSoJoo.TypingFantasy.controller;
 
+import com.GyuSoJoo.TypingFantasy.dto.RecordDTO;
 import com.GyuSoJoo.TypingFantasy.dto.ResponseObj;
 import com.GyuSoJoo.TypingFantasy.dto.UserDTO;
+import com.GyuSoJoo.TypingFantasy.service.RecordService;
 import com.GyuSoJoo.TypingFantasy.service.UserRankingService;
 import com.GyuSoJoo.TypingFantasy.service.UserService;
-import com.GyuSoJoo.TypingFantasy.service.UserStatsService;
+import com.GyuSoJoo.TypingFantasy.vo.RecordVO;
 import com.GyuSoJoo.TypingFantasy.vo.UserVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @RestController
@@ -27,10 +31,10 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private UserStatsService userStatsService;
+    private UserRankingService userRankingService;
 
     @Autowired
-    private UserRankingService userRankingService;
+    private RecordService recordService;
 
 
     @PostMapping("/register")
@@ -71,26 +75,46 @@ public class UserController {
         return ResponseObj.of(HttpStatus.OK.value(), "로그인 성공", response);
     }
 
-    @GetMapping("/stats/{name}")
+    @GetMapping("/{id}/record/recent")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "유저 통계 조회")
+    @Operation(summary = "유저 통계 조회 (최근 10개)")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "조회 실패", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "404", description = "유저 통계 조회 실패", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "유저 통계 조회 성공", content = @Content(mediaType = "application/json"))
     })
-    public ResponseObj<UserDTO.StatsResponse> getUserStats(@PathVariable("name") String name) {
-        UserVO user = userStatsService.getUserStats(name);
+    public ResponseObj<RecordDTO.userRecordResponse> getUserRecordLimit10(@PathVariable("id") long id) {
+        List<RecordVO> records = recordService.getRecordsByUserIdLimit10(id);
 
-        if (user == null) {
+        if (records.isEmpty()) {
             return ResponseObj.of(HttpStatus.NOT_FOUND.value(), "유저 통계 조회 실패");
         }
 
-        UserDTO.StatsResponse response = new UserDTO.StatsResponse(
-                user.getRecordTotalErrors(),
-                user.getTotalScore(),
-                user.getRecordAccuracyAvg(),
-                user.getRecordCpmAvg()
+        int recordCnt = records.size();
+
+        BigDecimal totalAccuracy = BigDecimal.ZERO;
+        int totalCpm = 0;
+        int totalSpecialCharError = 0;
+        int totalCaseMismatchError = 0;
+        int totalNormalTextError = 0;
+        long totalScore = userService.findTotalScoreById(id);
+
+        for (RecordVO record : records) {
+            totalAccuracy = totalAccuracy.add(record.getAccuracy());
+            totalCpm += record.getCpm();
+            totalSpecialCharError += record.getSpecialCharError();
+            totalCaseMismatchError += record.getCaseMismatchError();
+            totalNormalTextError += record.getNormalTextError();
+        }
+
+        RecordDTO.userRecordResponse response = new RecordDTO.userRecordResponse(
+                totalAccuracy.divide(BigDecimal.valueOf(recordCnt), 2, RoundingMode.HALF_UP),
+                totalCpm / recordCnt,
+                totalSpecialCharError,
+                totalCaseMismatchError,
+                totalNormalTextError,
+                totalScore
         );
+
         return ResponseObj.of(HttpStatus.OK.value(), "유저 통계 조회 성공", response);
     }
 
