@@ -25,4 +25,8 @@ public interface RecordMapper {
     // 레코드 조회 (단일)
     @Select("SELECT * FROM record WHERE user_id = #{id}")
     List<RecordVO> findByUserId(long id);
+
+    // 레코드 조회 10개 (단일)
+    @Select("SELECT * FROM record WHERE user_id = #{id} ORDER BY created_at DESC LIMIT 10")
+    List<RecordVO> findByUserIdLimit10(long id);
 }

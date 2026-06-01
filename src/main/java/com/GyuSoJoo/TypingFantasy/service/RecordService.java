@@ -26,4 +26,9 @@ public class RecordService {
     public List<RecordVO> getRecordsByUserId(long id) {
         return recordMapper.findByUserId(id);
     }
+
+    // 레코드 조회 10개 (단일)
+    public List<RecordVO> getRecordsByUserIdLimit10(long id) {
+        return recordMapper.findByUserIdLimit10(id);
+    }
 }
