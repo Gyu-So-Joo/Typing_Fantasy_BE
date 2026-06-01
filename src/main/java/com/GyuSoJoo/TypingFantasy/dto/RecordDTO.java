@@ -18,4 +18,13 @@ public class RecordDTO {
             int normalTextError,
             int score
     ) {}
+
+    public record userRecordResponse(
+            BigDecimal accuracyAvg,
+            int cpmAvg,
+            int totalSpecialCharError,
+            int totalCaseMismatchError,
+            int totalNormalTextError,
+            long totalScore
+    ) {}
 }
