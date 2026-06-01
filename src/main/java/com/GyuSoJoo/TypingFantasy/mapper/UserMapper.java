@@ -40,10 +40,10 @@ public interface UserMapper {
     int setUserMonsterIds(@Param("id") long id, @Param("monsterIds") String monsterIds);
 
     // 유저 totalScore 조회
-    @Update("SELECT total_score FROM user WHERE id = #{id}")
+    @Select("SELECT total_score FROM user WHERE id = #{id}")
     long findTotalScoreById(long id);
 
     // 유저 totalScore 변경
     @Update("UPDATE user SET total_score = #{totalScore} WHERE id = #{id}")
-    int setTotalScore(@Param("id") long id, @Param("totalScore") long total_score);
+    int setTotalScore(@Param("id") long id, @Param("totalScore") long totalScore);
 }
