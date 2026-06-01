@@ -49,4 +49,14 @@ public class UserService {
         String userMonsterIds = objectMapper.writeValueAsString(MonsterIds);
         return userMapper.setUserMonsterIds(id, userMonsterIds) > 0;
     }
+
+    // totalScore 조회
+    public long findTotalScoreById(long id) {
+        return userMapper.findTotalScoreById(id);
+    }
+
+    // totalScore 변경
+    public boolean setTotalScore(long id, long total_score) {
+        return userMapper.setTotalScore(id, total_score) > 0;
+    }
 }

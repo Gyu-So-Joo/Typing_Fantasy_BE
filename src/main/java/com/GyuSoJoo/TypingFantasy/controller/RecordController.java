@@ -45,30 +45,41 @@ public class RecordController {
         record.setCpm(request.cpm());
         record.setSpecialCharError(request.specialCharError());
         record.setCaseMismatchError(request.caseMismatchError());
-        record.setIndentationError(request.indentationError());
         record.setNormalTextError(request.normalTextError());
         record.setScore(record.getScore());
 
+        // 1. 유저 선택된 언어 변경
         boolean isSuccess1 = userService.setSelectedLang(record.getUserId(), request.selectedLang());
 
         if (!isSuccess1) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
 
+        // 2. 레코드 추가
         boolean isSuccess2 = recordService.addRecord(record);
 
         if (!isSuccess2) {
             return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
         }
 
+        // 3. 유저 총 점수 추가
+        long totalScore = userService.findTotalScoreById(record.getUserId());
+
+        boolean isSuccess3 = userService.setTotalScore(record.getUserId(), totalScore + record.getScore());
+
+        if (!isSuccess3) {
+            return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
+        }
+
+        // 4. 유저 몬스터 아이디 추가
         List<Integer> monsterIds = userService.findMonsterIdsById(record.getUserId());
 
         if (!monsterIds.contains((int) record.getMonsterId())) {
             monsterIds.add((int) record.getMonsterId());
 
-            boolean isSuccess3 = userService.setUserMonsterIds(record.getUserId(), monsterIds);
+            boolean isSuccess4 = userService.setUserMonsterIds(record.getUserId(), monsterIds);
 
-            if (!isSuccess3) {
+            if (!isSuccess4) {
                 return ResponseObj.of(HttpStatus.BAD_REQUEST.value(), "잘못된 요청입니다.");
             }
         }
