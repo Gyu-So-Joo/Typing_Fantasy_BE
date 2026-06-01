@@ -46,7 +46,7 @@ public class RecordController {
         record.setSpecialCharError(request.specialCharError());
         record.setCaseMismatchError(request.caseMismatchError());
         record.setNormalTextError(request.normalTextError());
-        record.setScore(record.getScore());
+        record.setScore(request.score());
 
         // 1. 유저 선택된 언어 변경
         boolean isSuccess1 = userService.setSelectedLang(record.getUserId(), request.selectedLang());
