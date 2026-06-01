@@ -18,7 +18,6 @@ public class RecordVO {
     private int cpm;
     private int specialCharError;
     private int caseMismatchError;
-    private int indentationError;
     private int normalTextError;
     private int score;
     private String createdAt;
